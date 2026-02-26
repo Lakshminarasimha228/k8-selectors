@@ -4,14 +4,14 @@ metadata:
   name: with-node-affinity
 spec:
   affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution: # hard requirement
-        nodeSelectorTerms:
-        - matchExpressions:
-          - key: hardware
-            operator: In
-            values:
-            - gpu
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: node.kubernetes.io/instance-type
+          operator: In
+          values:
+          - c5.large
       #       - gpuu
       # preferredDuringSchedulingIgnoredDuringExecution:  # soft requirement
       # - weight: 1
