@@ -13,9 +13,9 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: pod-1
+  name: pod-2
   labels:
-    app-name: pod-1
+    app-name: pod-2
     purpose: pod-affinity
 spec:
   affinity:
