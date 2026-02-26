@@ -5,7 +5,7 @@ metadata:
   labels:
     app-name: pod-1
     purpose: pod-affinity
-spec:     
+spec:
   containers:
   - name: pod-1
     image: nginx
@@ -33,11 +33,11 @@ spec:
         podAffinityTerm:
           labelSelector:
             matchExpressions:
-            - key: app-nameee   
+            - key: app-nameee
               operator: In
               values:
               - pod-1
-        topologyKey: "kubernetes.io/hostname" 
+          topologyKey: "kubernetes.io/hostname"
   containers:
   - name: pod-2
-    image: nginx    
+    image: nginx
