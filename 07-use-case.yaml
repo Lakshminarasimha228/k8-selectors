@@ -3,17 +3,17 @@ kind: Deployment
 metadata:
   name: redis-cache
 spec:
-  replicas: 3
   selector:
     matchLabels:
       app: store
+  replicas: 3
   template:
     metadata:
       labels:
         app: store
     spec:
       affinity:
-        podAffinity:
+        podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
               matchExpressions:
@@ -21,9 +21,9 @@ spec:
                 operator: In
                 values:
                 - store
-            topologyKey: kubernetes.io/hostname
+            topologyKey: "kubernetes.io/hostname"
       containers:
-      - name: redis
+      - name: redis-server
         image: redis:3.2-alpine
 ---
 apiVersion: apps/v1
@@ -31,10 +31,10 @@ kind: Deployment
 metadata:
   name: web-server
 spec:
-  replicas: 3
   selector:
     matchLabels:
       app: web-store
+  replicas: 3
   template:
     metadata:
       labels:
@@ -42,16 +42,14 @@ spec:
     spec:
       affinity:
         podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                - key: app
-                  operator: In
-                  values:
-                  - web-store
-              topologyKey: kubernetes.io/hostname
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - web-store
+            topologyKey: "kubernetes.io/hostname"
         podAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
@@ -60,7 +58,7 @@ spec:
                 operator: In
                 values:
                 - store
-            topologyKey: kubernetes.io/hostname
+            topologyKey: "kubernetes.io/hostname"
       containers:
       - name: web-app
         image: nginx:1.16-alpine
